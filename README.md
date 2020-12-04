@@ -21,18 +21,32 @@ CREATE DATABASE geofx;
 # Create user (make sure to set your own password)
 CREATE USER geofx_user WITH ENCRYPTED PASSWORD '<your_password>';
 GRANT ALL PRIVILEGES ON DATABASE geofx to geofx_user;
+# exit pqsl
+\q
+```
+
+Now open the settings file located at
+
+src/geofx/geofx/settings.py
+
+and update the password with the one you assigned in postgres (approximately in line 85)
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'geofx',
+        'USER': 'geofx_user',
+        'PASSWORD': '<your_password>',
+        'HOST': 'localhost',
+        'PORT': 5432
+    }
+}
 ```
 
 ```bash
-# Django configures now the database
-cd src/geofx
-python manage.py makemigrations
-python manage.py migrate
-# (this has to be repeated anytime the model is changed)
-
 # Now we setup nginx so that both the django app and geoserver
 # will be proxied via localhost:80. This assumes that your geoserver
-# instance is up and runnin on port 8080
+# instance is up and runnin on port 8080 !
 sudo apt-get install nginx
 sudo rm /etc/nginx/sites-enabled/default
 sudo rm /etc/nginx/sites-available/default
@@ -51,8 +65,14 @@ sudo service nginx restart
 source env/bin/activate
 cd src/geofx
 python manage.py runserver
+```
 
-
-
-
+## Notes
+When any changes to the model have been made, this must be updated in django like this:
+```bash
+cd src/geofx
+python manage.py makemigrations
+python manage.py migrate
+# (this has to be repeated anytime the model is changed)
+```
 
