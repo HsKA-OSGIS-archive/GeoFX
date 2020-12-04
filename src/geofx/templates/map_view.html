@@ -1,0 +1,10 @@
+<html>
+    <body>
+        <div>Hello {{ display_name }} user here is the map!</div>
+        {{ map_data|json_script:"map_data" }}
+        <script>
+        const map_data = JSON.parse(document.getElementById('map_data').textContent);
+        console.log("Hello from map script", map_data)
+        </script>
+    </body>
+</html>
