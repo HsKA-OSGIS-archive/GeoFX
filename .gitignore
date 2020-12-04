@@ -1,2 +1,4 @@
 env/
 *.pyc
+
+src/geofx/temp_storage/

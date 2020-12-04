@@ -1,4 +1,5 @@
-# playground_GeoFX
+# GeoFX: Geofencing web maps for everyone!
+Brought to you by GeofencingX
 
 ## Installation
 Pre-requisites: access to a terminal, Python 3.X, a Postgres DB, Geoserver running at port 8080
