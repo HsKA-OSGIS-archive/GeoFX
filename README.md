@@ -60,6 +60,12 @@ sudo ln -s /etc/nginx/sites-available/geofx /etc/nginx/sites-enabled/geofx
 sudo service nginx restart
 ```
 
+## Additional setup:
+At the moment the following things must be installed manually as well. ToDo: Automatize this
+In the local geoserver setup:
+- create a workspace 'geofx'
+- create a store 'geofx', which belongs to that workspace. Configure the local PostGIS connection as above
+
 ## Run the application
 ```bash
 # Activate the virtual environment (if not yet activated)

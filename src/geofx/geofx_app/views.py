@@ -10,6 +10,8 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.core.files.storage import default_storage
 from django.contrib.gis.gdal import DataSource
 import os.path
+import requests
+from requests.auth import HTTPBasicAuth
 
 
 from .serializers import MapSerializer
@@ -26,19 +28,39 @@ class PolygonCreate(View):
             if maps.count() > 0:
                 map_key = maps.first()
 
-                # todo: validate (is_valid()?)
+                # Todo: validate (is_valid()?)
                     # Map.objects.filter(url_name=pk).count() > 0:
                 up_file = request.FILES['geofencing_polygon']   
                 path = os.path.join('temp_storage', up_file.name)
+                # Todo: Is it possible to init the DataSource without saving the file to the disk?
                 file_name = default_storage.save(path, up_file)
-                print("fiiiiiiiile", file_name)
                 ds = DataSource(file_name)
-                # todo handling of more than one layer in the file
+                # Todo: handling of more than one layer in the file
                 lyr = ds[0]
-                # todo: handling of several polygons/ multipolygon
+                # Todo: handling of several polygons/ multipolygon
                 feature = lyr[0]
                 new_geofence = GeofencePoly.objects.create(geom=feature.geom.wkt, map_url_name=map_key)
-                response = {'hey': 'yo'}
+
+                # publish a new layer of the geofence_polygon table
+                #Todo: do not use geoserveradmin credentials
+                #Todo: what if epsg is not web mercator
+                data_dict = {
+                    'featureType': {
+                        'name': 'geofence_%s' % pk,
+                        'nativeName': 'geofx_app_geofencepoly',
+                        'title': 'Geofencing polygon of %s' % pk,
+                        "srs": "EPSG:3857",
+                        'cqlFilter': 'map_url_name_id = \'%s\'' % pk
+                    }
+                }
+                print("publishing new layer: ", data_dict['featureType']['name'])
+                res = requests.post('http://localhost/geoserver/rest/workspaces/geofx/featuretypes',\
+                    auth=HTTPBasicAuth('admin', 'geoserver'),\
+                    json=data_dict
+                    )
+                import pdb; pdb.set_trace()
+                print(res.text)
+                response = {'success': 'true'}
                 return JsonResponse(response)
             else:
                 return HttpResponseNotFound

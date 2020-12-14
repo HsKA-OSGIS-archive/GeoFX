@@ -16,16 +16,10 @@
         </style>
         <script src="/static/dist/ol.v6.4.3-dist/ol.js"></script>
       </head>
-    <body>
-        <div>Hello {{ display_name }} user here is the map!</div>
+  <body>
+    <div>Hello {{ display_name }} user here is the map!: {{ url_name }}</div>
         {{ map_data|json_script:"map_data" }}
-        <script>
-        const map_data = JSON.parse(document.getElementById('map_data').textContent);
-        console.log("Hello from map script", map_data)
-        </script>
-    </body>
-    <body>
-        <h1>{{ display_name }}: Title</h1>
-        <div id="map" class="map"></div>
-        <script type="text/javascript" src="/static/js/map_view.js"></script>
+    <div id="map" class="map"></div>
+    <script type="text/javascript" src="/static/js/map_view.js"></script>
+  </body>
 </html>
