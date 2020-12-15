@@ -1,11 +1,15 @@
-#from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.http import JsonResponse, HttpResponseNotFound, HttpResponse, Http404, HttpResponseNotAllowed
+from django.http import JsonResponse, HttpResponseNotFound, HttpResponse,\
+    Http404, HttpResponseNotAllowed, HttpResponseForbidden, HttpResponseRedirect
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView    
+
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.core.files.storage import default_storage
 from django.contrib.gis.gdal import DataSource
@@ -15,7 +19,7 @@ from requests.auth import HTTPBasicAuth
 
 
 from .serializers import MapSerializer
-from .models import Map, GeofencePoly
+from .models import Map, GeofencePoly, MapCreateForm
 
 
 class PolygonCreate(View):
@@ -82,13 +86,19 @@ class MapView(TemplateView):
         else:
             raise Http404
 
-
-class MapCreate(CreateView):
+class MapCreate(LoginRequiredMixin, CreateView):
     template_name = 'map_edit.html'
     model = Map
-    fields = ['url_name']
+    form_class = MapCreateForm
 
-class MapEdit(UpdateView):
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.owner = self.request.user
+        obj.save()
+        return HttpResponseRedirect('/map/' + obj.url_name)
+
+
+class MapEdit(LoginRequiredMixin, UpdateView):
     template_name = 'map_edit.html'
     model = Map
     fields = ['url_name']
@@ -102,3 +112,22 @@ class MapEdit(UpdateView):
             return c_dict
         else:
             raise Http404
+
+class UserOverview(LoginRequiredMixin, TemplateView):
+    template_name = 'user_overview.html'
+
+    def get_context_data(self):
+        if not self.request.user.is_authenticated:
+            raise PermissionDenied()
+
+def register(request):
+    if request.method == 'POST':
+        f = UserCreationForm(request.POST)
+        print("is valid: ", f.is_valid())
+        if f.is_valid():
+            f.save()
+            return redirect('login')
+    else:
+        f = UserCreationForm()
+
+    return render(request, 'registration/register.html', {'form': f})

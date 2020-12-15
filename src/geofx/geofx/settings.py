@@ -131,3 +131,5 @@ STATICFILES_DIRS = [
     BASE_DIR / "frontend" / "static",
 ]
 
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/user/'
