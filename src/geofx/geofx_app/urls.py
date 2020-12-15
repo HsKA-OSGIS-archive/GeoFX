@@ -12,6 +12,7 @@ urlpatterns = [
     path('map/create/', views.MapCreate.as_view()),
     path('map/<url_name>/', views.MapView.as_view()),
     path('map/<pk>/edit/', views.MapEdit.as_view()),
+    path('map/<pk>/delete/', views.MapDelete.as_view()),
     path('map/<pk>/edit/polygon_create/', csrf_exempt(views.PolygonCreate.as_view()), name='polygon_create'),
     path('', include('django.contrib.auth.urls')),
     path('register/', views.register),

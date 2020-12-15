@@ -1,9 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Local Library</title>
+        <title>GeoFX: Map Overview</title>
     </head>
     <body>
-        overview
+        <h1>Overview</h1>
+        <h2>Welcome {{ user }}</h2>
+        {% if maps|length > 0 %}
+        <h3>Your maps:</h3>
+        <ol>
+            {% for map in maps %}
+                <li>
+                    <a href="/map/{{ map.url_name }}/">Map: {{ map.display_name }}</a>
+                    <button><a href="/map/{{ map.url_name }}/edit">Update</a></button>
+                    <form style="display: inline;" method="POST" action="/map/{{ map.url_name }}/delete/">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ol>
+        {% else %}
+        <p>Looks like you haven't created a geofencing map yet. Click here to create one:</p>
+        {% endif %}
+        <button><a href="/map/create/">Add geofencing map</a></button>
     </body>
 </html>

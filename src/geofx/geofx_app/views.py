@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponse,\
     Http404, HttpResponseNotAllowed, HttpResponseForbidden, HttpResponseRedirect
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import CreateView, UpdateView    
+from django.views.generic.edit import CreateView, UpdateView, DeleteView 
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +27,8 @@ class PolygonCreate(View):
     #@csrf_exempt
     def post(self, request, pk):
         print("yo polygon create: ", request, "name: ", pk)
+        if not request.user.is_authenticated():
+            return HttpResponseNotAllowed
         if request.method == 'POST':  
             maps = Map.objects.filter(url_name=pk)
             if maps.count() > 0:
@@ -97,7 +99,6 @@ class MapCreate(LoginRequiredMixin, CreateView):
         obj.save()
         return HttpResponseRedirect('/map/' + obj.url_name)
 
-
 class MapEdit(LoginRequiredMixin, UpdateView):
     template_name = 'map_edit.html'
     model = Map
@@ -113,12 +114,25 @@ class MapEdit(LoginRequiredMixin, UpdateView):
         else:
             raise Http404
 
+class MapDelete(DeleteView):
+    model = Map
+    success_url = '/user/'
+
 class UserOverview(LoginRequiredMixin, TemplateView):
     template_name = 'user_overview.html'
 
     def get_context_data(self):
         if not self.request.user.is_authenticated:
             raise PermissionDenied()
+        user = self.request.user
+        maps = Map.objects.filter(owner = user)
+        serializer = MapSerializer()
+        maps = [serializer.to_representation(map_i) for map_i in maps]
+        c_dict = {
+            "maps" : maps,
+            "user": user.username
+        }
+        return c_dict
 
 def register(request):
     if request.method == 'POST':
