@@ -1,0 +1,23 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" href="favicon.ico" />
+        <link rel="stylesheet" href="/static/styles/style.css">
+        <title>GeofencinGX</title>
+    </head>
+    <body>
+        Welcome, we have the following geofencing maps:
+        {% if maps|length > 0 %}
+        <h3>Available maps:</h3>
+        <ol>
+            {% for map in maps %}
+                <li>
+                    <a href="/map/{{ map.url_name }}/">Map: {{ map.display_name }}</a>
+                </li>
+            {% endfor %}
+        </ol>
+        {% else %}
+        <p>Looks like there are no maps available.</p>
+        {% endif %}
+    </body>
+</html>

@@ -25,7 +25,7 @@ SECRET_KEY = '$gz1sv6j*hw-f9wmhq0n_gh&cryq#dw0a$s4g&8y1@%98-n66w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -82,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'geofx',
         'USER': 'geofx_user',
-        'PASSWORD': 'granit123',
+        'PASSWORD': '<your_password>',
         'HOST': 'localhost',
         'PORT': 5432
     }

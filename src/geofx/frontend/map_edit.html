@@ -6,6 +6,8 @@
             {% else %}
             <h2>Hello and welcome create here a new geofencing map</h2>
             {% endif %}
+            yo:
+            {{ errors }}
             <form method="post">{% csrf_token %}
                 url name: <input type="text" name="url_name" value="{{ url_name }}"></input>
                 <button>submit</button>
