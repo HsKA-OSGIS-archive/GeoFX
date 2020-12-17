@@ -22,6 +22,10 @@ CREATE DATABASE geofx;
 # Create user (make sure to set your own password)
 CREATE USER geofx_user WITH ENCRYPTED PASSWORD '<your_password>';
 GRANT ALL PRIVILEGES ON DATABASE geofx to geofx_user;
+# connect to the database
+\c geofx ;
+# create the postgis extension
+CREATE EXTENSION postgis ;
 # exit pqsl
 \q
 ```
@@ -71,6 +75,9 @@ In the local geoserver setup:
 # Activate the virtual environment (if not yet activated)
 source env/bin/activate
 cd src/geofx
+# If this is the first time running after cloning the repository, you need to do
+python manage.py migrate
+# Then everytime for running:
 python manage.py runserver
 ```
 

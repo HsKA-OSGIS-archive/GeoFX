@@ -13,6 +13,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.core.files.storage import default_storage
 from django.contrib.gis.gdal import DataSource
+from django.contrib.gis.geos import GEOSGeometry, MultiPolygon
 import os.path
 import requests
 from requests.auth import HTTPBasicAuth
@@ -27,13 +28,12 @@ class PolygonCreate(View):
     #@csrf_exempt
     def post(self, request, pk):
         print("yo polygon create: ", request, "name: ", pk)
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             return HttpResponseNotAllowed
         if request.method == 'POST':  
             maps = Map.objects.filter(url_name=pk)
             if maps.count() > 0:
                 map_key = maps.first()
-
                 # Todo: validate (is_valid()?)
                     # Map.objects.filter(url_name=pk).count() > 0:
                 up_file = request.FILES['geofencing_polygon']   
@@ -43,9 +43,16 @@ class PolygonCreate(View):
                 ds = DataSource(file_name)
                 # Todo: handling of more than one layer in the file
                 lyr = ds[0]
-                # Todo: handling of several polygons/ multipolygon
-                feature = lyr[0]
-                new_geofence = GeofencePoly.objects.create(geom=feature.geom.wkt, map_url_name=map_key)
+                if not lyr.geom_type.name in ['Polygon', 'MultiPolygon']:
+                    return HttpResponseNotAllowed('Layer must be of geometry Polygon or MultiPolygon')
+                for feature in lyr:
+                    print("featt")
+                    if feature.geom_type.name == 'MultiPolygon':
+                        for poly in feature.geom:
+                            print("poly")
+                            GeofencePoly.objects.create(geom=poly.wkt, map_url_name=map_key)
+                    else:
+                        GeofencePoly.objects.create(geom=feature.geom.wkt, map_url_name=map_key)
 
                 # publish a new layer of the geofence_polygon table
                 #Todo: do not use geoserveradmin credentials
@@ -64,7 +71,6 @@ class PolygonCreate(View):
                     auth=HTTPBasicAuth('admin', 'geoserver'),\
                     json=data_dict
                     )
-                import pdb; pdb.set_trace()
                 print(res.text)
                 response = {'success': 'true'}
                 return JsonResponse(response)
@@ -99,6 +105,20 @@ class MapCreate(LoginRequiredMixin, CreateView):
         obj.save()
         return HttpResponseRedirect('/map/' + obj.url_name)
 
+class MapList(TemplateView):
+    template_name = 'map_list.html'
+
+    def get_context_data(self):
+        maps = Map.objects.filter()
+        c_dict = {
+            "maps": []
+        }
+        serializer = MapSerializer()
+        for map_i in maps:            
+            c_dict["maps"].append(serializer.to_representation(map_i))
+
+        return c_dict
+        
 class MapEdit(LoginRequiredMixin, UpdateView):
     template_name = 'map_edit.html'
     model = Map

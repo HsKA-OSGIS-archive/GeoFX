@@ -9,7 +9,15 @@
             {% endif %}
             <form method="post">{% csrf_token %}
                 url name: <input type="text" name="url_name" value="{{ url_name }}"></input>
+                display name: <input type="text" name="display_name" value="{{ display_name }}"></input>
                 title: <input type="text" name="title" value="{{ title }}"></input>
+                description: <input type="text" name="description" value="{{ description }}"></input>
+                map_center: <input type="json" name="map_center" value="{{ map_center }}"></input>
+                map_zoom: <input type="integer" name="map_zoom" value="{{ map_zoom }}"></input>
+                fence_enter_message: <input type="text" name="fence_enter_message" value="{{ fence_enter_message}}"></input>
+                fence_leave_message: <input type="text" name="fence_leave_message" value="{{ fence_leave_message }}"></input>
+                basemap: <input type="text" name="basemap" value="{{ basemap }}"></input>
+                fence_polygon: <input type="text" name="fence_polygon" value="{{ fence_polygon }}"></input>
                 <button>submit</button>
             </form>
         
