@@ -2,14 +2,17 @@
     <body>
         <div>
             {% if url_name %}
-            <h2>Hello and edit here the map: {{ url_name }}</h2>
-            {% else %}
+            <h2>Hello and edit here the map: {{ url_name }}</h2>    
+                <h1>This is{{ title }} the Map</h1>
+               {% else %}
             <h2>Hello and welcome create here a new geofencing map</h2>
             {% endif %}
             <form method="post">{% csrf_token %}
                 url name: <input type="text" name="url_name" value="{{ url_name }}"></input>
+                title: <input type="text" name="title" value="{{ title }}"></input>
                 <button>submit</button>
             </form>
+        
 
             <form method="post" action="polygon_create/" enctype="multipart/form-data">
                 {% csrf_token %}
