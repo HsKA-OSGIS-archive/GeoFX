@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from .settings_config import POSTGRES_USERNAME, POSTGRES_PASSWORD, GEOSERVER_USERNAME, \
+    GEOSERVER_PASSWORD, GEOSERVER_URL
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,7 @@ SECRET_KEY = '$gz1sv6j*hw-f9wmhq0n_gh&cryq#dw0a$s4g&8y1@%98-n66w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -81,8 +83,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'geofx',
-        'USER': 'geofx_user',
-        'PASSWORD': '<your_password>',
+        'USER': POSTGRES_USERNAME,
+        'PASSWORD': POSTGRES_PASSWORD,
         'HOST': 'localhost',
         'PORT': 5432
     }

@@ -1,0 +1,5 @@
+POSTGRES_USERNAME = 'geofx_user'
+POSTGRES_PASSWORD = ''
+GEOSERVER_USERNAME = ''
+GEOSERVER_PASSWORD = ''
+GEOSERVER_URL = 'http://localhost/geoserver/'
