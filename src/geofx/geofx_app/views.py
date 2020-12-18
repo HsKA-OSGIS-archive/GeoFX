@@ -36,7 +36,7 @@ class PolygonCreate(View):
                 map_key = maps.first()
                 # Todo: validate (is_valid()?)
                     # Map.objects.filter(url_name=pk).count() > 0:
-                up_file = request.FILES['geofencing_polygon']   
+                up_file = request.FILES['geofencing_polygon']
                 path = os.path.join('temp_storage', up_file.name)
                 # Todo: Is it possible to init the DataSource without saving the file to the disk?
                 file_name = default_storage.save(path, up_file)
@@ -67,11 +67,13 @@ class PolygonCreate(View):
                     }
                 }
                 print("publishing new layer: ", data_dict['featureType']['name'])
+                # todo: auth in settings
                 res = requests.post('http://localhost/geoserver/rest/workspaces/geofx/featuretypes',\
                     auth=HTTPBasicAuth('admin', 'geoserver'),\
                     json=data_dict
                     )
                 print(res.text)
+                #todo: error handling
                 response = {'success': 'true'}
                 return JsonResponse(response)
             else:
@@ -122,9 +124,9 @@ class MapList(TemplateView):
 class MapEdit(LoginRequiredMixin, UpdateView):
     template_name = 'map_edit.html'
     model = Map
-    fields = ['url_name']
+    form_class = MapCreateForm
 
-    def get_context_data(self):
+    def get_context_data(self, form=None):
         maps = Map.objects.filter(url_name=self.kwargs['pk'])
         if maps.count() > 0:
             serializer = MapSerializer()
@@ -133,6 +135,16 @@ class MapEdit(LoginRequiredMixin, UpdateView):
             return c_dict
         else:
             raise Http404
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.owner = self.request.user
+        obj.save()
+        return HttpResponseRedirect('/map/' + obj.url_name)
+
+    def form_invalid(self, form):
+        print("invalid called!")
+        raise Http404
 
 class MapDelete(DeleteView):
     model = Map
