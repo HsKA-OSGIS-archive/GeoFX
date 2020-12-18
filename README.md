@@ -26,7 +26,7 @@ python3 -m venv env
 # Activate the virtual environment
 source env/bin/activate
 # Install dependencies
-pip install Django psycopg2-binary djangorestframework
+pip install Django psycopg2-binary djangorestframework requests
 # Create a database for the application
 # Enter postgres console to create a database and user
 psql
