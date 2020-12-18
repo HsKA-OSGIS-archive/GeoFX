@@ -2,8 +2,23 @@
 Brought to you by GeofencingX
 
 ## Installation
-Pre-requisites: access to a terminal, Python 3.X, a Postgres DB, Geoserver running at port 8080
-Tested on Lubuntu based on Ubuntu 18.04.5 (OSGeo-Live)
+Tested on OSGeoLive (Lubuntu) based on Ubuntu 18.04.5 (OSGeo-Live).
+
+### Preparation
+Pre-requisites: access to a terminal, Python 3.X, a Postgres DB, Geoserver running at a tomcat server.
+
+If tomcat is not yet installed, follow the instructions to do it, for example from [here](https://linuxize.com/post/how-to-install-tomcat-9-on-ubuntu-18-04/). Make sure to follow the instructions until the last step so that you create a user/role which allows you to access the tomcat manager gui.
+When your tomcat is up and running, download the latest geoserver war from [geoserver.org](http://geoserver.org/release/stable/). Make sure to downlad the *WAR* archive. Unzip the archive, then copy the .war file to your tomcat webapps directory, e.g.:
+
+```
+sudo cp geoserver.war /opt/tomcat/latest/webapps/
+# give permissions to the tomcat user:
+chown tomcat:tomcat  /opt/tomcat/latest/webapps/geoserver.war
+```
+Finally, access the tomcat manager gui at localhost:8080/manager (or the port where you are running it) with your username and password, and start the geoserver application via the gui.
+
+
+### Setup
 ```bash
 sudo apt-get install python3-venv
 # Create a virtual environment for the Python application
@@ -19,39 +34,28 @@ psql
 
 ```SQL
 CREATE DATABASE geofx;
-# Create user (make sure to set your own password)
+-- Create user (make sure to set your own password)
 CREATE USER geofx_user WITH ENCRYPTED PASSWORD '<your_password>';
 GRANT ALL PRIVILEGES ON DATABASE geofx to geofx_user;
-# connect to the database
+-- Connect to the database
 \c geofx ;
-# create the postgis extension
+-- Create the postgis extension
 CREATE EXTENSION postgis ;
-# exit pqsl
+-- Exit pqsl
 \q
 ```
 
-Now open the settings file located at
-
-src/geofx/geofx/settings.py
-
-and update the password with the one you assigned in postgres (approximately in line 85)
-```python
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'geofx',
-        'USER': 'geofx_user',
-        'PASSWORD': '<your_password>',
-        'HOST': 'localhost',
-        'PORT': 5432
-    }
-}
+Now copy the settings_config.py.template
+```
+cp src/geofx/geofx/settings_config.py.template src/geofx/geofx/settings_config.py
+# Afterwards, configure the usernames/passwords in the settings_config.py
 ```
 
 ```bash
 # Now we setup nginx so that both the django app and geoserver
-# will be proxied via localhost:80. This assumes that your geoserver
-# instance is up and runnin on port 8080 !
+# will be proxied via localhost:80. This assumes that your tomcat/geoserver
+# instance is up and running on port 8080 ! Change the host and port numbers if necessary.
+# Also make sure that your port 80 is not blocked by another application.
 sudo apt-get install nginx
 sudo rm /etc/nginx/sites-enabled/default
 sudo rm /etc/nginx/sites-available/default
