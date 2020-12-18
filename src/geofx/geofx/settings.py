@@ -82,11 +82,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'geofx',
         'USER': 'geofx_user',
-<<<<<<< HEAD
-        'PASSWORD': 'Allblacks',
-=======
         'PASSWORD': '<your_password>',
->>>>>>> fdd9b5aa36e94ded6a2f1968637b2861a04be867
         'HOST': 'localhost',
         'PORT': 5432
     }
