@@ -1,25 +1,30 @@
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <link rel="icon" href="favicon.ico" />
-        <meta
-          name="description"
-          content="GeofencinGX"
-        />
-        <title>GeofencinGX</title>
-        <link rel="stylesheet" href="/static/dist/ol.v6.4.3-dist/ol.css" type="text/css">
-        <style>
-          .map {
-            height: 800px;
-            width: 90%;
-          }
-        </style>
-        <script src="/static/dist/ol.v6.4.3-dist/ol.js"></script>
-      </head>
+{% extends "base.html" %}
+
+{% block additional_styles %}
+  <link rel="stylesheet" href="/static/dist/ol.v6.4.3-dist/ol.css" type="text/css">
+  <style>
+    .map {
+      height: 90%;
+      width: 100%%;
+    }
+  </style>
+{% endblock %}
+
+
+{% block content %}
   <body>
-    <div>Hello {{ display_name }} user here is the map!: {{ url_name }}</div>
+    <div>
+      {% if title %}
+        {{ title }}
+      {% else %}
+        Untitled geofencing map
+      {% endif %}
+    </div>
         {{ map_data|json_script:"map_data" }}
     <div id="map" class="map"></div>
-    <script type="text/javascript" src="/static/js/map_view.js"></script>
-  </body>
-</html>
+{% endblock %}
+
+{% block additional_scripts %}
+  <script src="/static/dist/ol.v6.4.3-dist/ol.js"></script>
+  <script type="text/javascript" src="/static/js/map_view.js"></script>
+{% endblock %}

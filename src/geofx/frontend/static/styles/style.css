@@ -1,61 +1,59 @@
-* {
-	margin: 0;
-	padding: 0;
+/* all pages */
+html, body {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
 }
+
 body {
 	font-family: 'Poppins', sans-serif;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+  color: #fff;
 }
-.wrapper {
-	width: 1170px;
-	margin: 20;
+
+.main-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
-header {
-	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("resources/backgroung_image.png");
-	height: 100vh;
-	-webkit-background-size: cover;
-	background-size: cover;
-	background-position: center center;
-	position: relative;
+
+#content {
+  flex-grow: 1;
 }
-.nav-area {
-	float: right;
-	list-style: none;
-	margin-top: 20px;
-}
-.nav-area li {
-	display: inline-block;
-}
-.nav-area li a {
-	color: #fff;
+
+.action_button {
+  background-color: inherit;
+	border: 1px solid #fff;
+	padding: 10px 25px;
 	text-decoration: none;
-	padding: 20px 20px;
-	font-family: poppins;
-	font-size: 16px;
 	text-transform: uppercase;
+	font-size: 12px;
+	display: inline-block;
+	color: #fff;
 }
-.nav-area li a:hover {
+
+.action_button:hover {
 	background: #fff;
 	color: #333;
 }
-.logo {
-	float: left;
-}
-.logo img {
-	width: 10%;
-	padding: 10px 0;
-}
+
+/* index.html */
+
 .welcome-text {
-	position: absolute;
-	width: 600px;
-	height: 300px;
-	margin: 20% 20%;
-	text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-weight: bold;
+  text-align: center;
 }
+
 .welcome-text h1 {
+  padding-left: 20%;
+  padding-right: 20%;
 	text-align: center;
 	color: #fff;
 	text-transform: uppercase;
-	font-size: 60px;
+	font-size: 3em;
 }
 .welcome-text h1 span {
 	color: #00fecb;
@@ -73,39 +71,4 @@ header {
 .welcome-text a:hover {
 	background: #fff;
 	color: #333;
-}
-/*resposive*/
-
-@media (max-width:600px) {
-	.wrapper {
-		width: 100%;
-	}
-	.logo {
-		float: none;
-		width: 50%;
-		text-align: center;
-		margin: auto;
-	}
-	img {
-		width: ;
-	}
-	.nav-area {
-		float: none;
-		margin-top: 0;
-	}
-	.nav-area li a {
-		padding: 5px;
-		font-size: 11px;
-	}
-	.nav-area {
-		text-align: center;
-	}
-	.welcome-text {
-		width: 100%;
-		height: auto;
-		margin: 30% 0;
-	}
-	.welcome-text h1 {
-		font-size: 30px;
-	}
 }
