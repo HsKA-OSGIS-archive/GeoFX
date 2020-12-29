@@ -5,17 +5,20 @@ GeoFX - Login
 {% endblock %}
 
 {% block content %}
-  Welcome, we have the following geofencing maps:
-  {% if maps|length > 0 %}
-    <h3>Available maps:</h3>
-    <ol>
-      {% for map in maps %}
-        <li>
-          <a href="/map/{{ map.url_name }}/">Map: {{ map.display_name }}</a>
-        </li>
-      {% endfor %}
-    </ol>
-  {% else %}
-    <p>Looks like there are no maps available.</p>
-  {% endif %}
+  <div class="content_inner">
+    {% if maps|length > 0 %}
+      <h3 class="overview_title">The following geofencing maps are available:</h3>
+      <table>
+        {% for map in maps %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td><a href="/map/{{ map.url_name }}/">{{ map.title }} - {{ map.display_name }}</a></td>
+            <td><a href="/map/{{ map.url_name }}/" class="action_button">Explore</a></td>
+          </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+      <p>Looks like there are no maps available.</p>
+    {% endif %}
+  </div>
 {% endblock %}

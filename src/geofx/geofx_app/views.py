@@ -24,13 +24,15 @@ from .models import Map, GeofencePoly, MapCreateForm
 
 
 class PolygonCreate(View):
-    #@method_decorator(csrf_exempt, name='dispatch')
-    #@csrf_exempt
     def post(self, request, pk):
         print("yo polygon create: ", request, "name: ", pk)
         if not request.user.is_authenticated:
             return HttpResponseNotAllowed
-        if request.method == 'POST':  
+        if request.method == 'POST':
+            if not 'geofencing_layer_name' in request.POST or request.POST['geofencing_layer_name'] == '':
+              return JsonResponse({'success': False, 'error': 'You must provide a layer name'})
+            if not 'geofencing_polygon' in request.FILES or request.FILES['geofencing_polygon'] == '':
+              return JsonResponse({'success': False, 'error': 'Missing geojson file'})
             maps = Map.objects.filter(url_name=pk)
             if maps.count() > 0:
                 map_key = maps.first()
@@ -74,7 +76,7 @@ class PolygonCreate(View):
                     )
                 print(res.text)
                 #todo: error handling
-                response = {'success': 'true'}
+                response = {'success': True}
                 return JsonResponse(response)
             else:
                 return HttpResponseNotFound
@@ -131,7 +133,8 @@ class MapEdit(LoginRequiredMixin, UpdateView):
         if maps.count() > 0:
             serializer = MapSerializer()
             map_result = maps.first()
-            c_dict = serializer.to_representation(map_result)
+            c_dict = serializer.to_representation(map_result)            
+            c_dict['map_data'] = c_dict.copy()
             return c_dict
         else:
             raise Http404
@@ -161,8 +164,7 @@ class UserOverview(LoginRequiredMixin, TemplateView):
         serializer = MapSerializer()
         maps = [serializer.to_representation(map_i) for map_i in maps]
         c_dict = {
-            "maps" : maps,
-            "user": user.username
+            "maps" : maps
         }
         return c_dict
 

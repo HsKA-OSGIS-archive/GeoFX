@@ -1,33 +1,55 @@
-<html>
-    <body>
-        <div>
-            {% if url_name %}
-            <h2>Hello and edit here the map: {{ url_name }}</h2>    
-                <h1>This is{{ title }} the Map</h1>
-               {% else %}
-            <h2>Hello and welcome create here a new geofencing map</h2>
-            {% endif %}
-            <form method="post">{% csrf_token %}
-                url name: <input type="text" name="url_name" value="{{ url_name }}"></input>
-                display name: <input type="text" name="display_name" value="{{ display_name }}"></input>
-                title: <input type="text" name="title" value="{{ title }}"></input>
-                description: <input type="text" name="description" value="{{ description }}"></input>
-                map_center: <input type="json" name="map_center" value="{{ map_center }}"></input>
-                map_zoom: <input type="integer" name="map_zoom" value="{{ map_zoom }}"></input>
-                fence_enter_message: <input type="text" name="fence_enter_message" value="{{ fence_enter_message}}"></input>
-                fence_leave_message: <input type="text" name="fence_leave_message" value="{{ fence_leave_message }}"></input>
-                basemap: <input type="text" name="basemap" value="{{ basemap }}"></input>
-                <button>submit</button>
-            </form>
-        
+{% extends "base.html" %}
 
-            <form method="post" action="polygon_create/" enctype="multipart/form-data">
-                {% csrf_token %}
-                <h3>Upload geo data</h3>
-                <!-- todo: set accept="text/*" for file input -->
-                File name: <input type="file" name="geofencing_polygon"></input>
-                <button>submit</button>
-            </form>
-        </div>
-    </body>
-</html>
+{% block additional_styles %}
+  <link rel="stylesheet" href="/static/dist/ol.v6.4.3-dist/ol.css" type="text/css">
+{% endblock %}
+
+
+{% block content %}
+  <div class="content_inner">
+    {% if url_name %}
+      <h1 class="overview_title">Geofencing map editing area - {{ url_name }}</h1>
+    {% else %}
+      <h1 class="overview_title">Create here a new geofencing map</h1>
+    {% endif %}
+    <form method="post">{% csrf_token %}
+        url name: <input type="text" name="url_name" value="{{ url_name }}"></input>
+        display name: <input type="text" name="display_name" value="{{ display_name }}"></input>
+        title: <input type="text" name="title" value="{{ title }}"></input>
+        description: <input type="text" name="description" value="{{ description }}"></input>
+        map_center: <input type="json" name="map_center" value="{{ map_center }}"></input>
+        map_zoom: <input type="integer" name="map_zoom" value="{{ map_zoom }}"></input>
+        fence_enter_message: <input type="text" name="fence_enter_message" value="{{ fence_enter_message}}"></input>
+        fence_leave_message: <input type="text" name="fence_leave_message" value="{{ fence_leave_message }}"></input>
+        basemap: <input type="text" name="basemap" value="{{ basemap }}"></input>
+        <br/>
+        <button class="action_button">Submit</button>
+    </form>
+    <hr/>
+    <h3>Geofencing polygon</h3>
+    <div class="alert" role="alert">
+      <span class="alert-text">Alert text</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% if not geofencing_layer_name %}
+      You have not uploaded a file with the geofencing geometry yet. Please upload it here.
+    {% endif %}
+    <form id="polygonUploadForm" method="post" action="polygon_create/" enctype="multipart/form-data">
+        {% csrf_token %}
+        Layer name: <input type="text" name="geofencing_layer_name" value="{{ geofencing_layer_name }}"></input>
+        <br/>
+        Upload new file (.geojson): <input type="file" id="inputGeofencingFile" name="geofencing_polygon"></input>
+        <br/>
+        <button class="action_button">Submit</button>
+    </form>
+  </div>
+  {{ map_data|json_script:"map_data" }}
+  <div id="map" class="map"></div>
+{% endblock %}
+
+{% block additional_scripts %}
+  <script src="/static/dist/ol.v6.4.3-dist/ol.js"></script>
+  <script type="text/javascript" src="/static/js/map_edit.js"></script>
+{% endblock %}

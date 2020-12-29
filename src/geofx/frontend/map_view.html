@@ -2,12 +2,6 @@
 
 {% block additional_styles %}
   <link rel="stylesheet" href="/static/dist/ol.v6.4.3-dist/ol.css" type="text/css">
-  <style>
-    .map {
-      height: 90%;
-      width: 100%%;
-    }
-  </style>
 {% endblock %}
 
 
@@ -20,7 +14,7 @@
         Untitled geofencing map
       {% endif %}
     </div>
-        {{ map_data|json_script:"map_data" }}
+    {{ map_data|json_script:"map_data" }}
     <div id="map" class="map"></div>
 {% endblock %}
 

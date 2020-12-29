@@ -6,7 +6,7 @@ html, body {
 
 body {
 	font-family: 'Poppins', sans-serif;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+  background-color: #4D5159;
   color: #fff;
 }
 
@@ -28,7 +28,9 @@ body {
 	text-transform: uppercase;
 	font-size: 12px;
 	display: inline-block;
-	color: #fff;
+  color: #fff;
+  border-radius: 20px;
+  cursor: pointer;
 }
 
 .action_button:hover {
@@ -71,4 +73,47 @@ body {
 .welcome-text a:hover {
 	background: #fff;
 	color: #333;
+}
+
+/* map_list.html, user_overview.html */
+.content_inner {
+  padding: 2%;
+}
+
+.overview_title {
+  margin-bottom: 20px;
+}
+
+td {
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+td > a {
+  color: #fff;
+  text-decoration: underline #fff;
+}
+
+.modal span, .modal h5 {
+  color: black;
+}
+
+.btn-map-explore {
+  color: #00fecb
+}
+
+.btn-map-delete {
+  color: #ec939c
+}
+
+/* map_view.html, map_edit.html */
+.map {
+  height: 900px;
+  width: 90%;
+  margin: auto;
+  padding-bottom: 2%;
+}
+
+.alert {
+  display: none;
 }
