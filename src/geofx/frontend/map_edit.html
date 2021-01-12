@@ -1,30 +1,74 @@
 {% extends "base.html" %}
 
 {% block additional_styles %}
-  <link rel="stylesheet" href="/static/dist/ol.v6.4.3-dist/ol.css" type="text/css">
+  <link rel="stylesheet" href="/static/dist/ol.v6.4.3-dist/ol.css" type="text/css"> -->
 {% endblock %}
 
+<head>
+  <title>Geofencing</title>
+</head>
 
 {% block content %}
+ <body>
+ <div class="container">
   <div class="content_inner">
-    {% if url_name %}
-      <h1 class="overview_title">Geofencing map editing area - {{ url_name }}</h1>
-    {% else %}
-      <h1 class="overview_title">Create here a new geofencing map</h1>
-    {% endif %}
-    <form method="post">{% csrf_token %}
-        url name: <input type="text" name="url_name" value="{{ url_name }}"></input>
-        display name: <input type="text" name="display_name" value="{{ display_name }}"></input>
-        title: <input type="text" name="title" value="{{ title }}"></input>
-        description: <input type="text" name="description" value="{{ description }}"></input>
-        map_center: <input type="json" name="map_center" value="{{ map_center }}"></input>
-        map_zoom: <input type="integer" name="map_zoom" value="{{ map_zoom }}"></input>
-        fence_enter_message: <input type="text" name="fence_enter_message" value="{{ fence_enter_message}}"></input>
-        fence_leave_message: <input type="text" name="fence_leave_message" value="{{ fence_leave_message }}"></input>
-        basemap: <input type="text" name="basemap" value="{{ basemap }}"></input>
-        <br/>
-        <button class="action_button">Submit</button>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 ">
+        <div class="form-group">
+          <form method="post">{% csrf_token %}
+            {% if url_name %}
+            Geofencing map editing area - {{ url_name }}
+            {% else %}
+              Create here a new geofencing map
+            {% endif %}
+            <div class="row">
+              <label for="url_name" class>URL name</label>
+              <input type="text" name="url_name" value="{{ url_name }}" class="form-control">
+            </div>
+            <div class="row">
+              <label for="display_name">Display name</label>
+          <input type="text" name="display_name" value="{{ display_name }}" class="form-control">
+            </div>
+          <div class="row">
+            <label for="title">Title</label>
+            <input type="text" name="title" value="{{ title }}" class="form-control"></br> 
+          </div>
+          <div class="row">
+            <label for="description">Description</label>
+            <input type="text" name="description" value="{{ description }}" class="form-control"></br>
+          </div>
+          <div class="row">
+            <label for="map_center">Map center</label>
+          <textarea name="map_center" value="{{ map_center }}" class="form-control"></textarea></br> 
+          </div>
+          <div class="row">
+            <label for="map_zoom">Map zoom</label>
+            <input type="text" name="map_zoom" value="{{ map_zoom }}" class="form-control"></br> 
+          </div>
+          <div class="row">
+            <label for="fence_enter_message">Fence enter message</label>
+          <input type="text" name="fence_enter_message" value="{{ fence_enter_message}}" class="form-control"></br> 
+          </div>
+          <div class="row">
+            <label for="fence_leave_message">Fence leave message</label>
+          <input type="text" name="fence_leave_message" value="{{ fence_leave_message }}" class="form-control"></br> 
+          </div>
+          <div class="row">
+            <label for="basemap">Basemap</label>
+          <input type="text" name="basemap" value="{{ basemap }}" class="form-control"> <br/>
+          </div>
+          <div class="row">
+          <button class="btn btn-success form-control">Submit</button>
+
+          </div>
     </form>
+        </div>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+    
+    
     <hr/>
     <h3>Geofencing polygon</h3>
     <div class="alert" role="alert">
@@ -36,15 +80,33 @@
     {% if not geofencing_layer_name %}
       You have not uploaded a file with the geofencing geometry yet. Please upload it here.
     {% endif %}
-    <form id="polygonUploadForm" method="post" action="polygon_create/" enctype="multipart/form-data">
-        {% csrf_token %}
-        Layer name: <input type="text" name="geofencing_layer_name" value="{{ geofencing_layer_name }}"></input>
-        <br/>
-        Upload new file (.geojson): <input type="file" id="inputGeofencingFile" name="geofencing_polygon"></input>
-        <br/>
-        <button class="action_button">Submit</button>
-    </form>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <form id="polygonUploadForm" method="post" action="polygon_create/" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+              <label for="geofencing_layer_name">Layer name: </label>
+              <input type="text" name="geofencing_layer_name" value="{{ geofencing_layer_name }}"><br/>
+            </div>
+              <div class="row">
+                <label for="inputGeofencingFile">Upload new file (.geojson): </label>
+                <input type="file" id="inputGeofencingFile" name="geofencing_polygon" class="form-control"><br/>
+              </div>
+            <div class="row">
+              <button class="btn btn-success form-control">Submit</button>
+    
+            </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  
+    
   </div>
+ </div>
+ </body>
   {{ map_data|json_script:"map_data" }}
   <div id="map" class="map"></div>
 {% endblock %}
