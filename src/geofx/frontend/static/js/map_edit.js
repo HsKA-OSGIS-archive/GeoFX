@@ -1,5 +1,4 @@
 const map_data = JSON.parse(document.getElementById('map_data').textContent);
-console.log(map_data)
 var wms_layer_test = new ol.layer.Tile({
     source : new ol.source.TileWMS(({
         url : "http://localhost:8080/geoserver/geofx/wms?",
@@ -27,6 +26,21 @@ var map = new ol.Map({
 });
 
 function initMapEdit(){
+  if(map_data.map_center){
+    var data = JSON.parse(map_data.map_center);
+    $('#map_center_input').val(data.lon + ","+ data.lat);
+  }
+  $('#map_center_input').change(function(){
+    var txt_parts = this.value.split(",");
+    if(txt_parts.length === 2){
+      var data = {
+        'lon': txt_parts[0],
+        'lat': txt_parts[1]
+      }
+      $('#map_center_input_real').val(JSON.stringify(data));
+    }
+  });
+
   $('#polygonUploadForm').submit(function(){
     var url = $(this).attr('action');
     var formData = new FormData();
@@ -47,7 +61,6 @@ function initMapEdit(){
     }
   }).then(jsondata => {
     var alert =  $('.alert');
-    console.log(jsondata)
     if(jsondata.success) {
       alert.removeClass('alert-danger');
       alert.addClass('alert-success');

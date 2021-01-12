@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block additional_styles %}
-  <link rel="stylesheet" href="/static/dist/ol.v6.4.3-dist/ol.css" type="text/css"> -->
+  <link rel="stylesheet" href="/static/dist/ol.v6.4.3-dist/ol.css" type="text/css">
 {% endblock %}
 
 <head>
@@ -38,13 +38,32 @@
             <label for="description">Description</label>
             <input type="text" name="description" value="{{ description }}" class="form-control"></br>
           </div>
-          <div class="row">
-            <label for="map_center">Map center</label>
-          <textarea name="map_center" value="{{ map_center }}" class="form-control"></textarea></br> 
+          <div class="row">            
+            <label for="map_center">Map center
+              <br><span>Please provide the longitude and latitude of the center, seperated by a comma. E.g., "11.57,48.14"</span>
+            </label>
+          <input id="map_center_input_real" name="map_center" value="{{map_center}}" hidden></input>
+          <textarea id="map_center_input" class="form-control"></textarea></br> 
           </div>
           <div class="row">
-            <label for="map_zoom">Map zoom</label>
-            <input type="text" name="map_zoom" value="{{ map_zoom }}" class="form-control"></br> 
+            <label for="map_zoom_level">Map zoom level</label>
+            <select name="map_zoom_level" class="form-control">
+              {% for level in available_zoom_levels %}
+                {% if map_zoom_level %}
+                  {% if map_zoom_level == level %}
+                    <option value={{level}} selected>{{level}}</option>
+                    {% else %}
+                    <option value={{level}}>{{level}}</option>
+                  {% endif %}
+                {% else %}
+                  {% if level == 8 %}
+                    <option value={{level}} selected>{{level}}</option>
+                  {% else %}
+                    <option value={{level}}>{{level}}</option>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </select></br>
           </div>
           <div class="row">
             <label for="fence_enter_message">Fence enter message</label>

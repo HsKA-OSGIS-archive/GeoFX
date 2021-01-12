@@ -106,9 +106,11 @@ td > a {
   color: #ec939c
 }
 
+
+
 /* map_view.html, map_edit.html */
 .map {
-  height: 900px;
+  height: 85%;
   width: 90%;
   margin: auto;
   padding-bottom: 2%;
@@ -116,4 +118,10 @@ td > a {
 
 .alert {
   display: none;
+}
+
+.map-header {
+  padding-left: 5%;
+  padding-right: 5%;
+  text-align: center;
 }

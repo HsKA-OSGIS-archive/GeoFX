@@ -103,6 +103,12 @@ class MapCreate(LoginRequiredMixin, CreateView):
     model = Map
     form_class = MapCreateForm
 
+    def get_context_data(self, form=None):
+      c_dict = {}
+      available_zoom_levels = list(range(3,19))
+      c_dict["available_zoom_levels"] = available_zoom_levels
+      return c_dict
+
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.owner = self.request.user
@@ -135,6 +141,8 @@ class MapEdit(LoginRequiredMixin, UpdateView):
             map_result = maps.first()
             c_dict = serializer.to_representation(map_result)            
             c_dict['map_data'] = c_dict.copy()
+            available_zoom_levels = list(range(3,19))
+            c_dict["available_zoom_levels"] = available_zoom_levels
             return c_dict
         else:
             raise Http404
