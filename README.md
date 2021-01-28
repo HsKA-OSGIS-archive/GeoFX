@@ -90,6 +90,9 @@ python manage.py runserver
 ```
 
 ## Notes
+
+### Virtual environment & migrations
+
 When any changes to the model have been made, this must be updated in django like this:
 ```bash
 cd src/geofx
@@ -98,16 +101,22 @@ python manage.py migrate
 # (this has to be repeated anytime the model is changed)
 ```
 
-## Dependencies of the project
+### Dependencies of the project
 
-### To be installed when running:
+To be installed for running the application:
 - Django (BSD license)
 - NGINX (BSD license)
 - Apache Tomcat (Apache license 2.0)
 - Geoserver (GPL 2 license)
 
-### Included in this repo:
+Included in this repo:
 - Bootstrap (MIT license)
 - jQuery (MIT license)
 - OpenLayers (BSD license)
+
+
+### CORS
+
+An optional feature is to enable CORS so that the content of the GeoFX application can be included on other websites.
+This must be configured via filters in Tomcat. The necessary information is given in the [Tomcat documentation](https://tomcat.apache.org/tomcat-9.0-doc/config/filter.html#CORS_Filter)
 
