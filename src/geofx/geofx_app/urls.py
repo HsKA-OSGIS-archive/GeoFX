@@ -7,7 +7,6 @@ from . import views
 
 
 urlpatterns = [
-    path('api/<url_name>/polygon_create', csrf_exempt(views.PolygonCreate.as_view()), name='polygon_create'),
     path('', TemplateView.as_view(template_name="index.html")),
     path('about/', TemplateView.as_view(template_name="about.html")),
     path('map/create/', views.MapCreate.as_view()),
