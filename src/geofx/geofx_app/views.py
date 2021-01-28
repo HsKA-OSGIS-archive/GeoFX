@@ -27,6 +27,7 @@ from geofx.settings_config import GEOSERVER_USERNAME, \
 
 class PolygonCreate(View):
     def post(self, request, pk):
+        # Validation ...
         if not request.user.is_authenticated:
             return HttpResponseNotAllowed
         if request.method == 'POST':
@@ -35,17 +36,16 @@ class PolygonCreate(View):
             if not 'geofencing_polygon' in request.FILES or request.FILES['geofencing_polygon'] == '':
               return JsonResponse({'success': False, 'error': 'Missing geojson file'})
             maps = Map.objects.filter(url_name=pk)
+            # Find the map instance for which the polygon should be uploaded
             if maps.count() > 0:
                 map_key = maps.first()
-                # Todo: validate (is_valid()?)
-                    # Map.objects.filter(url_name=pk).count() > 0:
                 up_file = request.FILES['geofencing_polygon']
                 path = os.path.join('temp_storage', up_file.name)
-                # Todo: Is it possible to init the DataSource without saving the file to the disk?
+                # GEOJSON file is stored for further processing
                 file_name = default_storage.save(path, up_file)
                 ds = DataSource(file_name)
-                # Todo: handling of more than one layer in the file
                 lyr = ds[0]
+                # Check the geometry
                 if not lyr.geom_type.name in ['Polygon', 'MultiPolygon']:
                     return HttpResponseNotAllowed('Layer must be of geometry Polygon or MultiPolygon')
                 for feature in lyr:
