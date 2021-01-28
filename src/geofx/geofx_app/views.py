@@ -18,14 +18,15 @@ import os.path
 import requests
 from requests.auth import HTTPBasicAuth
 
-
 from .serializers import MapSerializer
 from .models import Map, GeofencePoly, MapCreateForm
+
+from geofx.settings_config import GEOSERVER_USERNAME, \
+    GEOSERVER_PASSWORD, GEOSERVER_URL
 
 
 class PolygonCreate(View):
     def post(self, request, pk):
-        print("yo polygon create: ", request, "name: ", pk)
         if not request.user.is_authenticated:
             return HttpResponseNotAllowed
         if request.method == 'POST':
@@ -48,17 +49,13 @@ class PolygonCreate(View):
                 if not lyr.geom_type.name in ['Polygon', 'MultiPolygon']:
                     return HttpResponseNotAllowed('Layer must be of geometry Polygon or MultiPolygon')
                 for feature in lyr:
-                    print("featt")
                     if feature.geom_type.name == 'MultiPolygon':
                         for poly in feature.geom:
-                            print("poly")
                             GeofencePoly.objects.create(geom=poly.wkt, map_url_name=map_key)
                     else:
                         GeofencePoly.objects.create(geom=feature.geom.wkt, map_url_name=map_key)
-
                 # publish a new layer of the geofence_polygon table
-                #Todo: do not use geoserveradmin credentials
-                #Todo: what if epsg is not web mercator
+                #Future improvement: Handling if epsg is not web mercator
                 data_dict = {
                     'featureType': {
                         'name': 'geofence_%s' % pk,
@@ -68,15 +65,14 @@ class PolygonCreate(View):
                         'cqlFilter': 'map_url_name_id = \'%s\'' % pk
                     }
                 }
-                print("publishing new layer: ", data_dict['featureType']['name'])
-                # todo: auth in settings
-                res = requests.post('http://localhost/geoserver/rest/workspaces/geofx/featuretypes',\
-                    auth=HTTPBasicAuth('admin', 'geoserver'),\
+                res = requests.post(GEOSERVER_URL +'rest/workspaces/geofx/featuretypes',\
+                    auth=HTTPBasicAuth(GEOSERVER_USERNAME, GEOSERVER_PASSWORD),\
                     json=data_dict
                     )
-                print(res.text)
-                #todo: error handling
-                response = {'success': True}
+                if res.status_code >= 200 and res.status_code < 400:
+                  response = {'success': True}
+                else:
+                  response = {'success': False, 'reason': res.text}
                 return JsonResponse(response)
             else:
                 return HttpResponseNotFound
@@ -113,7 +109,7 @@ class MapCreate(LoginRequiredMixin, CreateView):
         obj = form.save(commit=False)
         obj.owner = self.request.user
         obj.save()
-        return HttpResponseRedirect('/map/' + obj.url_name)
+        return HttpResponseRedirect('/map/' + obj.url_name + '/edit/')
 
 class MapList(TemplateView):
     template_name = 'map_list.html'
@@ -154,7 +150,6 @@ class MapEdit(LoginRequiredMixin, UpdateView):
         return HttpResponseRedirect('/map/' + obj.url_name)
 
     def form_invalid(self, form):
-        print("invalid called!")
         raise Http404
 
 class MapDelete(DeleteView):
@@ -179,7 +174,6 @@ class UserOverview(LoginRequiredMixin, TemplateView):
 def register(request):
     if request.method == 'POST':
         f = UserCreationForm(request.POST)
-        print("is valid: ", f.is_valid())
         if f.is_valid():
             f.save()
             return redirect('login')

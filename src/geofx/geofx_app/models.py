@@ -15,7 +15,7 @@ class Map(models.Model):
     fence_leave_message = models.TextField(blank=True)
     map_center = models.JSONField(null=True)
     map_zoom_level = models.IntegerField(null=True)
-    basemap = models.JSONField(null=True) # {type: , url:}
+    basemap = models.JSONField(null=True)
     geofencing_layer_name = models.TextField(blank=True)
 
     def get_absolute_url(self):
@@ -37,7 +37,6 @@ class MapCreateForm(forms.ModelForm):
         exclude = ('owner',)
 
     def __init__(self, *args, **kwargs):
-        print(dir(self))
         super(MapCreateForm, self).__init__(*args, **kwargs)
 
 

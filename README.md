@@ -5,7 +5,11 @@ Brought to you by GeofencingX
 Tested on OSGeoLive (Lubuntu) based on Ubuntu 18.04.5 (OSGeo-Live).
 
 ### Preparation
-Pre-requisites: access to a terminal, Python 3.X, a Postgres DB, Geoserver running at a tomcat server.
+#### Pre-requisites
+- sudo ccess to a terminal
+- Python 3.X
+- a running Postgres Database
+- Geoserver instance running at a local tomcat server
 
 If tomcat is not yet installed, follow the instructions to do it, for example from [here](https://linuxize.com/post/how-to-install-tomcat-9-on-ubuntu-18-04/). Make sure to follow the instructions until the last step so that you create a user/role which allows you to access the tomcat manager gui.
 When your tomcat is up and running, download the latest geoserver war from [geoserver.org](http://geoserver.org/release/stable/). Make sure to downlad the *WAR* archive. Unzip the archive, then copy the .war file to your tomcat webapps directory, e.g.:
@@ -13,7 +17,7 @@ When your tomcat is up and running, download the latest geoserver war from [geos
 ```
 sudo cp geoserver.war /opt/tomcat/latest/webapps/
 # give permissions to the tomcat user:
-chown tomcat:tomcat  /opt/tomcat/latest/webapps/geoserver.war
+sudo chown tomcat:tomcat  /opt/tomcat/latest/webapps/geoserver.war
 ```
 Finally, access the tomcat manager gui at localhost:8080/manager (or the port where you are running it) with your username and password, and start the geoserver application via the gui.
 
@@ -93,4 +97,17 @@ python manage.py makemigrations
 python manage.py migrate
 # (this has to be repeated anytime the model is changed)
 ```
+
+## Dependencies of the project
+
+### To be installed when running:
+- Django (BSD license)
+- NGINX (BSD license)
+- Apache Tomcat (Apache license 2.0)
+- Geoserver (GPL 2 license)
+
+### Included in this repo:
+- Bootstrap (MIT license)
+- jQuery (MIT license)
+- OpenLayers (BSD license)
 
