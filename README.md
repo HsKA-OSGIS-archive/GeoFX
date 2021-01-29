@@ -6,7 +6,7 @@ Tested on OSGeoLive (Lubuntu) based on Ubuntu 18.04.5 (OSGeo-Live).
 
 ### Preparation
 #### Pre-requisites
-- sudo ccess to a terminal
+- sudo access to a terminal
 - Python 3.X
 - a running Postgres Database
 - Geoserver instance running at a local tomcat server
