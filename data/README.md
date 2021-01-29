@@ -1,0 +1,1 @@
+The GEOJSON file in this folder representes a test polygon for the city of Frankfurt (Germany). The data is mock data and just for testing purposes.
