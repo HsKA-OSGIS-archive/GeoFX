@@ -8,6 +8,8 @@ An application which lets user create and publish their own context-dependent Ge
 ![alt text](https://raw.githubusercontent.com/HsKA-OSGIS/GeoFX/main/img/geofx_screenshot1.PNG)
 ![alt text](https://raw.githubusercontent.com/HsKA-OSGIS/GeoFX/main/img/geofx_screenshot2.PNG)
 
+Note: The displayed area in Frankfurt above is just made-up and does not reflect any official restrictions. It serves only as an example use case.
+
 ## Installation
 Tested on OSGeoLive (Lubuntu) based on Ubuntu 18.04.5 (OSGeo-Live).
 
