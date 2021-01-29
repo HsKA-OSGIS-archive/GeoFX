@@ -1,6 +1,12 @@
 # GeoFX: Geofencing web maps for everyone!
 Brought to you by GeofencingX
 
+An application which lets user create and publish their own context-dependent Geofencing web maps. Based on Django and Geoserver.
+
+![alt text](https://raw.githubusercontent.com/HsKA-OSGIS/GeoFX/main/img/geofx_screenshot3.png)
+![alt text](https://raw.githubusercontent.com/HsKA-OSGIS/GeoFX/main/img/geofx_screenshot1.png)
+![alt text](https://raw.githubusercontent.com/HsKA-OSGIS/GeoFX/main/img/geofx_screenshot2.png)
+
 ## Installation
 Tested on OSGeoLive (Lubuntu) based on Ubuntu 18.04.5 (OSGeo-Live).
 
