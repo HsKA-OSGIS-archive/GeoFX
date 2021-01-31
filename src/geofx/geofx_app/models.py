@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.gis.db import models
 import django.forms as forms
 
+
 class Map(models.Model):
     url_name = models.TextField(primary_key=True)
     owner = models.ForeignKey(
@@ -20,6 +21,7 @@ class Map(models.Model):
 
     def get_absolute_url(self):
         return "/map/%s/" % self.url_name
+
 
 class MapCreateForm(forms.ModelForm):
     url_name = forms.CharField(max_length=100)
@@ -40,7 +42,6 @@ class MapCreateForm(forms.ModelForm):
         super(MapCreateForm, self).__init__(*args, **kwargs)
 
 
-
 class GeofencePoly(models.Model):
     geom = models.PolygonField()
-    map_url_name = models.ForeignKey('Map',on_delete=models.CASCADE)
+    map_url_name = models.ForeignKey('Map', on_delete=models.CASCADE)

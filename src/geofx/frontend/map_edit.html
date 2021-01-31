@@ -32,18 +32,18 @@
             </div>
           <div class="row">
             <label for="title">Title</label>
-            <input type="text" name="title" value="{{ title }}" class="form-control"></br> 
+            <input type="text" name="title" value="{{ title }}" class="form-control"><br />
           </div>
           <div class="row">
             <label for="description">Description</label>
-            <input type="text" name="description" value="{{ description }}" class="form-control"></br>
+            <input type="text" name="description" value="{{ description }}" class="form-control"><br />
           </div>
           <div class="row">            
             <label for="map_center">Map center
               <br><span>Please provide the longitude and latitude of the center, seperated by a comma. E.g., "11.57,48.14"</span>
             </label>
-          <input id="map_center_input_real" name="map_center" value="{{map_center}}" hidden></input>
-          <textarea id="map_center_input" class="form-control"></textarea></br> 
+            <input id="map_center_input_real" name="map_center" value="{{map_center}}" hidden/>
+          <textarea id="map_center_input" class="form-control"></textarea><br />
           </div>
           <div class="row">
             <label for="map_zoom_level">Map zoom level</label>
@@ -63,15 +63,15 @@
                   {% endif %}
                 {% endif %}
               {% endfor %}
-            </select></br>
+            </select><br />
           </div>
           <div class="row">
             <label for="fence_enter_message">Fence enter message</label>
-          <input type="text" name="fence_enter_message" value="{{ fence_enter_message}}" class="form-control"></br> 
+          <input type="text" name="fence_enter_message" value="{{ fence_enter_message}}" class="form-control"><br />
           </div>
           <div class="row">
             <label for="fence_leave_message">Fence leave message</label>
-          <input type="text" name="fence_leave_message" value="{{ fence_leave_message }}" class="form-control"></br> 
+          <input type="text" name="fence_leave_message" value="{{ fence_leave_message }}" class="form-control"><br />
           </div>
           <div class="row">
             <label for="basemap">Basemap</label>
@@ -107,11 +107,11 @@
             {% csrf_token %}
             <div class="row">
               <label for="geofencing_layer_name">Layer name: </label>
-              <input type="text" name="geofencing_layer_name" value="{{ geofencing_layer_name }}"><br/>
+              <input type="text" name="geofencing_layer_name" value="{{ geofencing_layer_name }}"><br />
             </div>
               <div class="row">
                 <label for="inputGeofencingFile">Upload new file (.geojson): </label>
-                <input type="file" id="inputGeofencingFile" name="geofencing_polygon" class="form-control"><br/>
+                <input type="file" id="inputGeofencingFile" name="geofencing_polygon" class="form-control"><br />
               </div>
             <div class="row">
               <button class="btn btn-success form-control"

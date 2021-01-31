@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
 from django.contrib.auth import views as auth_views
