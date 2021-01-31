@@ -38,6 +38,8 @@ sudo apt-get install virtualenv
 virtualenv -p python3 env
 # Activate the virtual environment
 source env/bin/activate
+# Upgrade pip
+pip install --upgrade pip
 # Install dependencies
 pip install Django psycopg2-binary djangorestframework requests
 # Create a database for the application
