@@ -5,3 +5,9 @@ venv
 src/geofx/temp_storage/
 
 src/geofx/geofx/settings_config.py
+
+#####
+IDEs
+#####
+.idea
+
