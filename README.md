@@ -33,9 +33,9 @@ Finally, access the tomcat manager gui at localhost:8080/manager (or the port wh
 
 ### Setup
 ```bash
-sudo apt-get install python3-venv
+sudo apt-get install virtualenv
 # Create a virtual environment for the Python application
-python3 -m venv env
+virtualenv -p python3 env
 # Activate the virtual environment
 source env/bin/activate
 # Install dependencies
